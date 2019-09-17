@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:hrpayroll/Network/Utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiClient {
   Dio dio = new Dio();

@@ -14,11 +14,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
-  void enterEmpDetailsToSharedPref(List<String> empNo,
-      List<String> empName,
-      List<String> empDesignation,
-      List<String> empDepartment) async {
+  void enterEmpDetailsToSharedPref(List<String> empNo, List<String> empName,
+      List<String> empDesignation, List<String> empDepartment) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList("empNo", empNo);
     sharedPreferences.setStringList("empName", empName);
@@ -26,8 +23,8 @@ class _DashboardState extends State<Dashboard> {
     sharedPreferences.setStringList("empDepartment", empDepartment);
   }
 
-  void enterLeaveDetailsToSharedPref(List<String> leaveCode,
-      List<String> leaveDescription) async {
+  void enterLeaveDetailsToSharedPref(
+      List<String> leaveCode, List<String> leaveDescription) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList("leaveCode", leaveCode);
     sharedPreferences.setStringList("leaveDescription", leaveDescription);
@@ -45,26 +42,31 @@ class _DashboardState extends State<Dashboard> {
         children: <Widget>[
           FutureBuilder(
             future: _apiInterface1.getEmpData(),
-            builder: (BuildContext context, AsyncSnapshot<EmployeeMasterResponse> snapshot) {
-              if(snapshot.hasData) {
+            builder: (BuildContext context,
+                AsyncSnapshot<EmployeeMasterResponse> snapshot) {
+              if (snapshot.hasData) {
                 EmployeeMasterResponse employeeMasterResponse = snapshot.data;
-                if(employeeMasterResponse.status) {
+                if (employeeMasterResponse.status) {
                   List<String> empNo = List();
                   List<String> empName = List();
                   List<String> empDesignation = List();
                   List<String> empDepartment = List();
 
-                  for(int i = 0 ; i < employeeMasterResponse.data.length ; i++) {
+                  for (int i = 0; i < employeeMasterResponse.data.length; i++) {
                     empNo.add(employeeMasterResponse.data[i].no);
-                    empName.add(employeeMasterResponse.data[i].firstName + " " + employeeMasterResponse.data[i].lastName);
-                    empDesignation.add(employeeMasterResponse.data[i].designation);
-                    empDepartment.add(employeeMasterResponse.data[i].departmentCode);
+                    empName.add(employeeMasterResponse.data[i].firstName +
+                        " " +
+                        employeeMasterResponse.data[i].lastName);
+                    empDesignation
+                        .add(employeeMasterResponse.data[i].designation);
+                    empDepartment
+                        .add(employeeMasterResponse.data[i].departmentCode);
                   }
-                  enterEmpDetailsToSharedPref(empNo, empName, empDesignation, empDepartment);
+                  enterEmpDetailsToSharedPref(
+                      empNo, empName, empDesignation, empDepartment);
                 }
                 return Container();
-              }
-              else {
+              } else {
                 return Column(
                   children: <Widget>[
                     Center(
@@ -87,25 +89,26 @@ class _DashboardState extends State<Dashboard> {
             },
           ),
           FutureBuilder(
-            future: _apiInterface2.LeaveMasterResponseData(
-                LeaveMasterRequest(
-                  action: 1,
-                )
-            ),
-            builder: (BuildContext context, AsyncSnapshot<LeaveMasterResponse> snapshot) {
-              if(snapshot.hasData) {
+            future: _apiInterface2.LeaveMasterResponseData(LeaveMasterRequest(
+              action: 1,
+            )),
+            builder: (BuildContext context,
+                AsyncSnapshot<LeaveMasterResponse> snapshot) {
+              if (snapshot.hasData) {
                 LeaveMasterResponse _myResponseData = snapshot.data;
-                if(_myResponseData.status) {
+                if (_myResponseData.status) {
                   List<String> leaveCode = List();
                   List<String> leaveDescription = List();
 
-                  for(int i = 0 ; i < _myResponseData.data.length ; i++) {
+                  for (int i = 0; i < _myResponseData.data.length; i++) {
                     leaveCode.add(_myResponseData.data[i].leaveCode);
                     leaveDescription.add(_myResponseData.data[i].description);
                   }
                   enterLeaveDetailsToSharedPref(leaveCode, leaveDescription);
                 }
-                return Center(child: Text("Welcome to Dashboard"),);
+                return Center(
+                  child: Text("Welcome to Dashboard"),
+                );
               } else {
                 return Column(
                   children: <Widget>[
@@ -123,7 +126,9 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                     ),
-                    Center(child: Text("Welcome to Dashboard"),),
+                    Center(
+                      child: Text("Welcome to Dashboard"),
+                    ),
                   ],
                 );
               }
