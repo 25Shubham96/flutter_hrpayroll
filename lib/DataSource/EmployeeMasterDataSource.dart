@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+
 import '../response_model/EmployeeMasterResponse.dart';
 
 class EmployeeMasterDataSource extends DataTableSource {
-
-  List<EmployeeMasterModel> data= new List();
+  List<EmployeeMasterModel> data = new List();
 
   EmployeeMasterDataSource(this.data);
 
   int selectedCount = 0;
   var prevIndex = -1;
 
-  int selecteRow;
-  EmployeeMasterModel selectedRowData;
+  bool rowSelect = false;
+  EmployeeMasterModel selectedRowData = EmployeeMasterModel();
 
   void selectAll(bool checked) {
-    for (EmployeeMasterModel empMasMod in data)
-      empMasMod.selected = checked;
+    for (EmployeeMasterModel empMasMod in data) empMasMod.selected = checked;
     selectedCount = checked ? data.length : 0;
     notifyListeners();
   }
@@ -28,15 +27,14 @@ class EmployeeMasterDataSource extends DataTableSource {
       index: index,
       selected: employeeMasterModel.selected,
       onSelectChanged: (bool value) {
-        if(employeeMasterModel.selected != value) {
-          selecteRow = index;
+        if (employeeMasterModel.selected != value) {
+          rowSelect = true;
           selectedRowData = data[index];
 
           selectedCount += value ? 1 : -1;
           assert(selectedCount >= 0);
           employeeMasterModel.selected = value;
-          if(prevIndex != -1)
-            data[prevIndex].selected = false;
+          if (prevIndex != -1) data[prevIndex].selected = false;
           notifyListeners();
           prevIndex = index;
         }
@@ -49,27 +47,43 @@ class EmployeeMasterDataSource extends DataTableSource {
         DataCell(Text(employeeMasterModel.employmentDate)),
         DataCell(Text(employeeMasterModel.sponser)),
         DataCell(Text(employeeMasterModel.employeeLocation)),
-        DataCell(Checkbox(value: employeeMasterModel.postToGl == 1 ? true : false, onChanged: null)),
-        DataCell(Checkbox(value: employeeMasterModel.entitleForDepedantFlight == 1 ? true : false, onChanged: null)),
-        DataCell(Checkbox(value: employeeMasterModel.entitleForDepedantIsurance == 1 ? true : false, onChanged: null)),
-        DataCell(Checkbox(value: employeeMasterModel.resigned == 1 ? true : false, onChanged: null)),
-        DataCell(Checkbox(value: employeeMasterModel.termination == 1 ? true : false, onChanged: null)),
+        DataCell(Checkbox(
+            value: employeeMasterModel.postToGl == 1 ? true : false,
+            onChanged: null)),
+        DataCell(Checkbox(
+            value: employeeMasterModel.entitleForDepedantFlight == 1
+                ? true
+                : false,
+            onChanged: null)),
+        DataCell(Checkbox(
+            value: employeeMasterModel.entitleForDepedantIsurance == 1
+                ? true
+                : false,
+            onChanged: null)),
+        DataCell(Checkbox(
+            value: employeeMasterModel.resigned == 1 ? true : false,
+            onChanged: null)),
+        DataCell(Checkbox(
+            value: employeeMasterModel.termination == 1 ? true : false,
+            onChanged: null)),
         DataCell(Text(employeeMasterModel.city)),
         DataCell(Text(employeeMasterModel.countryCode)),
         DataCell(Text(employeeMasterModel.designation)),
-        DataCell(Text(employeeMasterModel.status.toString())),//status description needed
+        DataCell(Text(employeeMasterModel.status.toString())),
+        //status description needed
         DataCell(Text(employeeMasterModel.periodStartDate)),
         DataCell(Text(employeeMasterModel.periodEndDate)),
         DataCell(Text(employeeMasterModel.departmentCode)),
         DataCell(Text(employeeMasterModel.empPostingGroup)),
         DataCell(Text(employeeMasterModel.payrollBusPostingGroup)),
-        DataCell(Checkbox(value: employeeMasterModel.probation == 1 ? true : false, onChanged: null)),
+        DataCell(Checkbox(
+            value: employeeMasterModel.probation == 1 ? true : false,
+            onChanged: null)),
         DataCell(Text(employeeMasterModel.no)),
         DataCell(Text(employeeMasterModel.employeeLocation)),
         DataCell(Text(employeeMasterModel.jobTitle)),
         DataCell(Text(employeeMasterModel.operationType)),
       ],
-
     );
   }
 
@@ -81,5 +95,4 @@ class EmployeeMasterDataSource extends DataTableSource {
 
   @override
   int get selectedRowCount => selectedCount;
-
 }

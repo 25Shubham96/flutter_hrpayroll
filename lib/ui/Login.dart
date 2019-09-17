@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hrpayroll/Network/ApiInterface.dart';
+import 'package:hrpayroll/Network/Utils.dart';
 import 'package:hrpayroll/request_model/loginRequest.dart';
 import 'package:hrpayroll/response_model/loginResponse.dart';
 import 'package:http/http.dart' as http;
@@ -21,13 +24,29 @@ class _LoginState extends State<Login> {
 
   LoginResponse _myData;
 
+  ApiInterface _apiInterface = ApiInterface();
+
+  void UpdateSharedPrefs(String sessionId, String userName) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      sharedPreferences.setString(Util.sessionId, sessionId);
+      sharedPreferences.setString(Util.userName, userName);
+    });
+
+    log("SFsessionId: ${sessionId}");
+    log("SFuseName: ${userName}");
+  }
+
   void getLoginResponse(BuildContext context, LoginRequest req) async {
-    _myData = await checkLogin(req);
+    _myData = await _apiInterface.checkLogin(req);
 
     if (_myData.status) {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString('userId', _myData.data[0].userId);
-      sharedPreferences.setString('sessionId', _myData.data[0].sessionId);
+      log("sessionId: ${_myData.data[0].sessionId.toString()}");
+      log("useName: ${_myData.data[0].userId.toString()}");
+
+      UpdateSharedPrefs(_myData.data[0].sessionId.toString(),
+          _myData.data[0].userId.toString());
 
       Navigator.push(context,
           new MaterialPageRoute(builder: (BuildContext context) {
@@ -45,9 +64,11 @@ class _LoginState extends State<Login> {
               child: new Text("ok")),
         ],
       );
-      showDialog(context: context, builder: (context) {
-        return alert;
-      });
+      showDialog(
+          context: context,
+          builder: (context) {
+            return alert;
+          });
     }
   }
 
@@ -125,9 +146,11 @@ class _LoginState extends State<Login> {
                                     child: new Text("ok")),
                               ],
                             );
-                            showDialog(context: context, builder: (context) {
-                              return alert;
-                            });
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return alert;
+                                });
                           } else {
                             LoginRequest req = LoginRequest(
                               username: _userController.text,

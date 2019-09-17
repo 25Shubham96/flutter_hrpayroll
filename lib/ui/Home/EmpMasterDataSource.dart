@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class EmpMasterDataSource extends DataTableSource {
-
   final List<Employee> data = <Employee>[
     Employee("Emp-0001", "Linda", "Firtz", "01-01-2000"),
     Employee("Emp-0004", "Margret", "Ericssion", "01-01-2015"),
@@ -33,12 +32,13 @@ class EmpMasterDataSource extends DataTableSource {
     assert(index >= 0);
     final Employee employee = data[index];
     // TODO: implement getRow
-    return DataRow.byIndex(cells: <DataCell>[
-      DataCell(Text('${employee.EmpNo}')),
-      DataCell(Text('${employee.EmpFName}')),
-      DataCell(Text('${employee.EmpLName}')),
-      DataCell(Text('${employee.EmpJoinDate}')),
-    ],
+    return DataRow.byIndex(
+      cells: <DataCell>[
+        DataCell(Text('${employee.EmpNo}')),
+        DataCell(Text('${employee.EmpFName}')),
+        DataCell(Text('${employee.EmpLName}')),
+        DataCell(Text('${employee.EmpJoinDate}')),
+      ],
       index: index,
     );
   }
@@ -54,7 +54,6 @@ class EmpMasterDataSource extends DataTableSource {
   @override
   // TODO: implement selectedRowCount
   int get selectedRowCount => 0;
-
 }
 
 class Employee {

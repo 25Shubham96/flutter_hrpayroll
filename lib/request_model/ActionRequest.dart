@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-ActionRequest actionReqFromJson(String str) => ActionRequest.fromJson(json.decode(str));
+ActionRequest actionReqFromJson(String str) =>
+    ActionRequest.fromJson(json.decode(str));
 
 String actionReqToJson(ActionRequest data) => json.encode(data.toJson());
 
@@ -19,19 +20,20 @@ class ActionRequest {
     this.inchargeName,
   });
 
-  factory ActionRequest.fromJson(Map<String, dynamic> json) => new ActionRequest(
-    action: json["Action"],
-    employeeId: json["EmployeeId"],
-    sactionIncharge: json["SactionIncharge"],
-    hierarchy: json["Hierarchy"],
-    inchargeName: json["InchargeName"],
-  );
+  factory ActionRequest.fromJson(Map<String, dynamic> json) =>
+      new ActionRequest(
+        action: json["Action"],
+        employeeId: json["EmployeeId"],
+        sactionIncharge: json["SactionIncharge"],
+        hierarchy: json["Hierarchy"],
+        inchargeName: json["InchargeName"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "Action": action,
-    "EmployeeId": employeeId,
-    "SactionIncharge": sactionIncharge,
-    "Hierarchy": hierarchy,
-    "InchargeName": inchargeName,
-  };
+        "Action": action,
+        "EmployeeId": employeeId,
+        "SactionIncharge": sactionIncharge,
+        "Hierarchy": hierarchy,
+        "InchargeName": inchargeName,
+      };
 }

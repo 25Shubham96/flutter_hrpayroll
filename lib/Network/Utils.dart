@@ -1,5 +1,4 @@
-
-
 class Util {
-  final String sessionId = "sessionId";
+  static final String sessionId = "sessionId";
+  static final String userName = "userName";
 }
